@@ -1,6 +1,5 @@
 ---
 import { site, mainNav, legalNav } from '../data/site';
-import { practiceAreas } from '../data/practiceAreas';
 import PhoneLink from './PhoneLink.astro';
 
 const year = new Date().getFullYear();
@@ -14,28 +13,22 @@ const year = new Date().getFullYear();
         <a class="btn btn-light" href={site.bookingHref}>Book a consultation</a>
       </div>
 
-      <nav class="col" aria-label="Practice areas">
-        <h2 class="col-title">Practice areas</h2>
-        <ul class="areas">
-          {practiceAreas.map((a) => (
-            <li><a href={`/practice-areas/${a.slug}`}>{a.name}</a></li>
-          ))}
-        </ul>
-      </nav>
+      <div class="cols">
+        <div class="col">
+          <h2 class="col-title">Contact</h2>
+          <ul>
+            <li><PhoneLink /></li>
+            <li><a href={`mailto:${site.email}`}>{site.email}</a></li>
+            <li><address>{site.address}</address></li>
+          </ul>
+        </div>
 
-      <div class="col">
-        <h2 class="col-title">Contact</h2>
-        <ul>
-          <li><PhoneLink /></li>
-          <li><a href={`mailto:${site.email}`}>{site.email}</a></li>
-          <li><address>{site.address}</address></li>
-        </ul>
-        <h2 class="col-title spaced">Firm</h2>
-        <ul>
-          {mainNav.filter((n) => n.href !== '/practice-areas').map((n) => (
-            <li><a href={n.href}>{n.label}</a></li>
-          ))}
-        </ul>
+        <nav class="col" aria-label="Footer">
+          <h2 class="col-title">Firm</h2>
+          <ul>
+            {mainNav.map((n) => <li><a href={n.href}>{n.label}</a></li>)}
+          </ul>
+        </nav>
       </div>
     </div>
 
@@ -61,31 +54,29 @@ const year = new Date().getFullYear();
   .site-footer {
     background: var(--graphite);
     color: var(--sage);
-    padding-block: clamp(3rem, 2rem + 4vw, 5rem) 2rem;
+    padding-block: clamp(2.5rem, 2rem + 2vw, 3.5rem) 1.5rem;
     font-size: var(--text-sm);
   }
 
   a { color: var(--sage-light); text-decoration: none; }
   a:hover { color: var(--green-light); text-decoration: underline; text-underline-offset: 3px; }
 
-  ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 0.6rem; }
+  ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 0.5rem; }
   address { font-style: normal; }
 
   .top {
     display: grid;
-    gap: 2.5rem;
-    grid-template-columns: 1fr;
+    gap: 2rem;
   }
 
   .logo {
     font-family: var(--font-serif);
-    font-size: 2rem;
+    font-size: 1.75rem;
     line-height: 1;
   }
   .lede {
-    margin: 1rem 0 1.5rem;
-    max-width: 28ch;
-    font-size: var(--text-base);
+    margin: 0.75rem 0 1.25rem;
+    max-width: 30ch;
   }
 
   .btn-light {
@@ -94,23 +85,25 @@ const year = new Date().getFullYear();
   }
   .btn-light:hover { color: var(--graphite); text-decoration: none; }
 
+  .cols {
+    display: grid;
+    gap: 2rem;
+  }
+
   .col-title {
     font: 600 0.75rem / 1.4 var(--font-sans);
     letter-spacing: 0.12em;
     text-transform: uppercase;
     color: var(--green-light);
-    margin: 0 0 1rem;
+    margin: 0 0 0.75rem;
   }
-  .col-title.spaced { margin-top: 2rem; }
-
-  .areas { grid-template-columns: 1fr; }
 
   .regulatory {
     display: flex;
     align-items: center;
     gap: 1.25rem;
-    margin-top: 3rem;
-    padding-block: 1.5rem;
+    margin-top: 2rem;
+    padding-block: 1.25rem;
     border-top: 1px solid color-mix(in srgb, var(--sage) 22%, transparent);
   }
   .regulatory p { margin: 0; max-width: 70ch; }
@@ -118,8 +111,8 @@ const year = new Date().getFullYear();
     flex: none;
     display: grid;
     place-items: center;
-    width: 128px;
-    height: 64px;
+    width: 112px;
+    height: 56px;
     border: 1px dashed var(--green-light);
     border-radius: 8px;
     color: var(--green-light);
@@ -130,8 +123,8 @@ const year = new Date().getFullYear();
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
-    gap: 1rem;
-    padding-top: 1.5rem;
+    gap: 0.75rem 1rem;
+    padding-top: 1.25rem;
     border-top: 1px solid color-mix(in srgb, var(--sage) 22%, transparent);
   }
   .bottom p { margin: 0; }
@@ -141,11 +134,11 @@ const year = new Date().getFullYear();
     .regulatory { flex-direction: column; align-items: flex-start; }
   }
 
-  @media (min-width: 640px) {
-    .areas { grid-template-columns: 1fr 1fr; column-gap: 2rem; }
+  @media (min-width: 360px) {
+    .cols { grid-template-columns: 1fr 1fr; gap: 1.25rem; }
   }
 
-  @media (min-width: 960px) {
-    .top { grid-template-columns: 1.1fr 1.6fr 1fr; gap: 3rem; }
+  @media (min-width: 900px) {
+    .top { grid-template-columns: 1fr 1fr; gap: 3rem; }
   }
 </style>
