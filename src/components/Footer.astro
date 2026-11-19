@@ -6,41 +6,29 @@ const year = new Date().getFullYear();
 ---
 <footer class="site-footer">
   <div class="container">
-    <div class="top">
-      <div class="brand">
-        <a class="logo" href="/">{site.name}</a>
-        <p class="lede">Commercial disputes for clients in the UK and overseas.</p>
-        <a class="btn btn-light" href={site.bookingHref}>Book a consultation</a>
+    <div class="row main">
+      <a class="logo" href="/">{site.name}</a>
+      <div class="contact">
+        <PhoneLink />
+        <a href={`mailto:${site.email}`}>{site.email}</a>
       </div>
-
-      <div class="cols">
-        <div class="col">
-          <h2 class="col-title">Contact</h2>
-          <ul>
-            <li><PhoneLink /></li>
-            <li><a href={`mailto:${site.email}`}>{site.email}</a></li>
-            <li><address>{site.address}</address></li>
-          </ul>
-        </div>
-
-        <nav class="col" aria-label="Footer">
-          <h2 class="col-title">Firm</h2>
-          <ul>
-            {mainNav.map((n) => <li><a href={n.href}>{n.label}</a></li>)}
-          </ul>
-        </nav>
-      </div>
+      <nav aria-label="Footer">
+        <ul>
+          {mainNav.map((n) => <li><a href={n.href}>{n.label}</a></li>)}
+        </ul>
+      </nav>
     </div>
 
-    <div class="regulatory">
+    <div class="row regulatory">
       <!-- SRA digital badge goes here once the firm is authorised -->
       <div class="badge-slot" aria-hidden="true">[SRA badge]</div>
       <p>
         [Regulatory statement: wording supplied by the firm]. SRA number: {site.sraNumber}.
+        [Registered company details, if a company].
       </p>
     </div>
 
-    <div class="bottom">
+    <div class="row bottom">
       <p>&copy; {year} {site.name}</p>
       <ul>
         {legalNav.map((n) => <li><a href={n.href}>{n.label}</a></li>)}
@@ -54,91 +42,58 @@ const year = new Date().getFullYear();
   .site-footer {
     background: var(--graphite);
     color: var(--sage);
-    padding-block: clamp(2.5rem, 2rem + 2vw, 3.5rem) 1.5rem;
     font-size: var(--text-sm);
+    line-height: 1.5;
   }
 
   a { color: var(--sage-light); text-decoration: none; }
   a:hover { color: var(--green-light); text-decoration: underline; text-underline-offset: 3px; }
 
-  ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 0.5rem; }
-  address { font-style: normal; }
+  ul { margin: 0; padding: 0; list-style: none; display: flex; flex-wrap: wrap; gap: 0.25rem 1.25rem; }
+  p { margin: 0; }
 
-  .top {
-    display: grid;
-    gap: 2rem;
+  .row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem 1.5rem;
+    padding-block: 1rem;
   }
+  .row + .row { border-top: 1px solid color-mix(in srgb, var(--sage) 22%, transparent); }
+
+  .main { padding-top: 1.5rem; }
+  .bottom { padding-bottom: 1.5rem; justify-content: space-between; }
 
   .logo {
     font-family: var(--font-serif);
-    font-size: 1.75rem;
+    font-size: 1.375rem;
     line-height: 1;
   }
-  .lede {
-    margin: 0.75rem 0 1.25rem;
-    max-width: 30ch;
-  }
 
-  .btn-light {
-    background: var(--sage-light);
-    color: var(--graphite);
-  }
-  .btn-light:hover { color: var(--graphite); text-decoration: none; }
-
-  .cols {
-    display: grid;
-    gap: 2rem;
-  }
-
-  .col-title {
-    font: 600 0.75rem / 1.4 var(--font-sans);
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--green-light);
-    margin: 0 0 0.75rem;
-  }
-
-  .regulatory {
+  .contact {
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
-    gap: 1.25rem;
-    margin-top: 2rem;
-    padding-block: 1.25rem;
-    border-top: 1px solid color-mix(in srgb, var(--sage) 22%, transparent);
+    gap: 0.25rem 1.25rem;
   }
-  .regulatory p { margin: 0; max-width: 70ch; }
+
+  .main nav { margin-left: auto; }
+
+  .regulatory { flex-wrap: nowrap; gap: 1rem; }
   .badge-slot {
     flex: none;
     display: grid;
     place-items: center;
-    width: 112px;
-    height: 56px;
+    width: 80px;
+    height: 40px;
     border: 1px dashed var(--green-light);
-    border-radius: 8px;
+    border-radius: 6px;
     color: var(--green-light);
-    font-size: 0.75rem;
+    font-size: 0.6875rem;
   }
 
-  .bottom {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    gap: 0.75rem 1rem;
-    padding-top: 1.25rem;
-    border-top: 1px solid color-mix(in srgb, var(--sage) 22%, transparent);
-  }
-  .bottom p { margin: 0; }
-  .bottom ul { display: flex; flex-wrap: wrap; gap: 0.5rem 1.5rem; }
-
-  @media (max-width: 559.98px) {
-    .regulatory { flex-direction: column; align-items: flex-start; }
-  }
-
-  @media (min-width: 360px) {
-    .cols { grid-template-columns: 1fr 1fr; gap: 1.25rem; }
-  }
-
-  @media (min-width: 900px) {
-    .top { grid-template-columns: 1fr 1fr; gap: 3rem; }
+  @media (max-width: 767.98px) {
+    .main nav { margin-left: 0; width: 100%; }
+    .logo { width: 100%; }
   }
 </style>
