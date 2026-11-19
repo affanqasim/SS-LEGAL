@@ -1,0 +1,177 @@
+---
+import { site, mainNav } from '../data/site';
+import PhoneLink from './PhoneLink.astro';
+
+const path = Astro.url.pathname.replace(/\/$/, '') || '/';
+const isCurrent = (href: string) => path === href || path.startsWith(href + '/');
+---
+<header class="site-header">
+  <!-- Phone strip: phone widths only, so the number is always visible -->
+  <div class="phone-strip">
+    <div class="container"><PhoneLink /></div>
+  </div>
+
+  <div class="container bar">
+    <a class="logo" href="/" aria-label={`${site.name}, home`}>{site.name}</a>
+
+    <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="site-nav">
+      <span class="visually-hidden">Menu</span>
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+        stroke-width="1.5" stroke-linecap="round" aria-hidden="true" focusable="false">
+        <path class="line-top" d="M4 8h16" />
+        <path class="line-bottom" d="M4 16h16" />
+      </svg>
+    </button>
+
+    <nav id="site-nav" class="nav" aria-label="Main">
+      <ul>
+        {mainNav.map((item) => (
+          <li>
+            <a href={item.href} aria-current={isCurrent(item.href) ? 'page' : undefined}>
+              {item.label}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+
+    <div class="actions">
+      <PhoneLink class="phone-desktop" />
+      <a class="btn btn-primary" href={site.bookingHref}>Book a consultation</a>
+    </div>
+  </div>
+</header>
+
+<script>
+  const toggle = document.querySelector<HTMLButtonElement>('.menu-toggle');
+  const nav = document.getElementById('site-nav');
+  if (toggle && nav) {
+    const close = () => {
+      toggle.setAttribute('aria-expanded', 'false');
+      nav.classList.remove('is-open');
+    };
+    toggle.addEventListener('click', () => {
+      const open = toggle.getAttribute('aria-expanded') !== 'true';
+      toggle.setAttribute('aria-expanded', String(open));
+      nav.classList.toggle('is-open', open);
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && nav.classList.contains('is-open')) {
+        close();
+        toggle.focus();
+      }
+    });
+    window.matchMedia('(min-width: 900px)').addEventListener('change', (e) => {
+      if (e.matches) close();
+    });
+  }
+</script>
+
+<style>
+  .site-header {
+    border-bottom: var(--rule);
+    background: var(--sage);
+  }
+
+  .phone-strip {
+    border-bottom: var(--rule);
+    padding-block: 0.4rem;
+    color: var(--muted);
+  }
+
+  .bar {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.75rem 1rem;
+    min-height: var(--header-height);
+    padding-block: 0.75rem;
+  }
+
+  .logo {
+    font-family: var(--font-serif);
+    font-size: 1.6rem;
+    line-height: 1;
+    color: var(--graphite);
+    text-decoration: none;
+    letter-spacing: -0.01em;
+    margin-right: auto;
+  }
+
+  .menu-toggle {
+    order: 2;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    border: 1px solid var(--graphite);
+    border-radius: var(--radius-pill);
+    background: transparent;
+    color: var(--graphite);
+    cursor: pointer;
+  }
+  .menu-toggle path { transition: transform 0.2s ease; transform-origin: 12px 12px; }
+  .menu-toggle[aria-expanded='true'] .line-top { transform: translateY(4px) rotate(45deg); }
+  .menu-toggle[aria-expanded='true'] .line-bottom { transform: translateY(-4px) rotate(-45deg); }
+
+  .actions {
+    order: 1;
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+  }
+
+  .nav {
+    order: 3;
+    width: 100%;
+  }
+  .nav ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem 1.5rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .nav a {
+    display: inline-block;
+    padding-block: 0.35rem;
+    color: var(--graphite);
+    font-size: var(--text-sm);
+    font-weight: 500;
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+  }
+  .nav a:hover,
+  .nav a[aria-current='page'] { border-bottom-color: var(--green); }
+
+  .actions :global(.phone-desktop) { display: none; }
+
+  /* Phone widths with JavaScript: the nav collapses behind the menu button.
+     Without JavaScript the nav stays visible as a wrapped row. */
+  @media (max-width: 899.98px) {
+    :global(html.js) .menu-toggle { display: inline-flex; }
+    :global(html.js) .nav { display: none; }
+    :global(html.js) .nav.is-open { display: block; }
+    .nav ul { flex-direction: column; padding-block: 0.5rem 0.75rem; border-top: var(--rule); }
+    .nav a { padding-block: 0.6rem; font-size: var(--text-base); }
+  }
+
+  @media (max-width: 379.98px) {
+    .bar { gap: 0.75rem 0.5rem; }
+    .logo { font-size: 1.35rem; }
+    .actions .btn { padding-inline: 0.85rem; font-size: 0.8125rem; }
+  }
+
+  /* Desktop: one row, phone moves into the bar */
+  @media (min-width: 900px) {
+    .phone-strip { display: none; }
+    .bar { flex-wrap: nowrap; gap: 2.5rem; }
+    .logo { margin-right: 0; }
+    .nav { order: 0; width: auto; margin-right: auto; }
+    .actions { order: 0; }
+    .actions :global(.phone-desktop) { display: inline-flex; }
+  }
+</style>

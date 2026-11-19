@@ -1,0 +1,151 @@
+---
+import { site, mainNav, legalNav } from '../data/site';
+import { practiceAreas } from '../data/practiceAreas';
+import PhoneLink from './PhoneLink.astro';
+
+const year = new Date().getFullYear();
+---
+<footer class="site-footer">
+  <div class="container">
+    <div class="top">
+      <div class="brand">
+        <a class="logo" href="/">{site.name}</a>
+        <p class="lede">Commercial disputes for clients in the UK and overseas.</p>
+        <a class="btn btn-light" href={site.bookingHref}>Book a consultation</a>
+      </div>
+
+      <nav class="col" aria-label="Practice areas">
+        <h2 class="col-title">Practice areas</h2>
+        <ul class="areas">
+          {practiceAreas.map((a) => (
+            <li><a href={`/practice-areas/${a.slug}`}>{a.name}</a></li>
+          ))}
+        </ul>
+      </nav>
+
+      <div class="col">
+        <h2 class="col-title">Contact</h2>
+        <ul>
+          <li><PhoneLink /></li>
+          <li><a href={`mailto:${site.email}`}>{site.email}</a></li>
+          <li><address>{site.address}</address></li>
+        </ul>
+        <h2 class="col-title spaced">Firm</h2>
+        <ul>
+          {mainNav.filter((n) => n.href !== '/practice-areas').map((n) => (
+            <li><a href={n.href}>{n.label}</a></li>
+          ))}
+        </ul>
+      </div>
+    </div>
+
+    <div class="regulatory">
+      <!-- SRA digital badge goes here once the firm is authorised -->
+      <div class="badge-slot" aria-hidden="true">[SRA badge]</div>
+      <p>
+        [Regulatory statement: wording supplied by the firm]. SRA number: {site.sraNumber}.
+      </p>
+    </div>
+
+    <div class="bottom">
+      <p>&copy; {year} {site.name}</p>
+      <ul>
+        {legalNav.map((n) => <li><a href={n.href}>{n.label}</a></li>)}
+      </ul>
+    </div>
+  </div>
+</footer>
+
+<style>
+  /* Graphite section: light text, green-light accents. Never green text here. */
+  .site-footer {
+    background: var(--graphite);
+    color: var(--sage);
+    padding-block: clamp(3rem, 2rem + 4vw, 5rem) 2rem;
+    font-size: var(--text-sm);
+  }
+
+  a { color: var(--sage-light); text-decoration: none; }
+  a:hover { color: var(--green-light); text-decoration: underline; text-underline-offset: 3px; }
+
+  ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 0.6rem; }
+  address { font-style: normal; }
+
+  .top {
+    display: grid;
+    gap: 2.5rem;
+    grid-template-columns: 1fr;
+  }
+
+  .logo {
+    font-family: var(--font-serif);
+    font-size: 2rem;
+    line-height: 1;
+  }
+  .lede {
+    margin: 1rem 0 1.5rem;
+    max-width: 28ch;
+    font-size: var(--text-base);
+  }
+
+  .btn-light {
+    background: var(--sage-light);
+    color: var(--graphite);
+  }
+  .btn-light:hover { color: var(--graphite); text-decoration: none; }
+
+  .col-title {
+    font: 600 0.75rem / 1.4 var(--font-sans);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--green-light);
+    margin: 0 0 1rem;
+  }
+  .col-title.spaced { margin-top: 2rem; }
+
+  .areas { grid-template-columns: 1fr; }
+
+  .regulatory {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    margin-top: 3rem;
+    padding-block: 1.5rem;
+    border-top: 1px solid color-mix(in srgb, var(--sage) 22%, transparent);
+  }
+  .regulatory p { margin: 0; max-width: 70ch; }
+  .badge-slot {
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 128px;
+    height: 64px;
+    border: 1px dashed var(--green-light);
+    border-radius: 8px;
+    color: var(--green-light);
+    font-size: 0.75rem;
+  }
+
+  .bottom {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 1rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid color-mix(in srgb, var(--sage) 22%, transparent);
+  }
+  .bottom p { margin: 0; }
+  .bottom ul { display: flex; flex-wrap: wrap; gap: 0.5rem 1.5rem; }
+
+  @media (max-width: 559.98px) {
+    .regulatory { flex-direction: column; align-items: flex-start; }
+  }
+
+  @media (min-width: 640px) {
+    .areas { grid-template-columns: 1fr 1fr; column-gap: 2rem; }
+  }
+
+  @media (min-width: 960px) {
+    .top { grid-template-columns: 1.1fr 1.6fr 1fr; gap: 3rem; }
+  }
+</style>

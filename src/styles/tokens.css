@@ -1,0 +1,34 @@
+/* Sage and graphite design tokens (CLAUDE.md). */
+
+:root {
+  /* Colour */
+  --sage: #dce3d8;        /* main page background */
+  --sage-light: #f5f7f3;  /* cards, form background */
+  --graphite: #1f2421;    /* text, primary buttons, dark sections */
+  --green: #3e5c4a;       /* accent on light backgrounds only */
+  --green-light: #a9c2ae; /* accent on graphite backgrounds only */
+  --muted: #3a413c;       /* secondary text on sage */
+  --border: #afb8ab;      /* input borders */
+
+  /* Type */
+  --font-serif: 'Newsreader Variable', Georgia, 'Times New Roman', serif;
+  --font-sans: 'Instrument Sans Variable', system-ui, -apple-system, 'Segoe UI', sans-serif;
+
+  --text-sm: 0.875rem;
+  --text-base: 1.0625rem;
+  --text-lg: 1.25rem;
+  --heading-1: clamp(2.5rem, 1.6rem + 3.6vw, 4.125rem); /* ~40px phone, 66px desktop */
+  --heading-2: clamp(2rem, 1.5rem + 2vw, 3rem);
+  --heading-3: clamp(1.375rem, 1.2rem + 0.6vw, 1.75rem);
+
+  /* Shape */
+  --radius-card: 16px;
+  --radius-card-lg: 20px;
+  --radius-pill: 999px;
+  --rule: 1px solid color-mix(in srgb, var(--graphite) 18%, transparent);
+
+  /* Layout */
+  --max-width: 1200px;
+  --gutter: clamp(1rem, 0.5rem + 2.5vw, 2.5rem);
+  --header-height: 76px;
+}
