@@ -8,7 +8,8 @@
   --green: #3e5c4a;       /* accent on light backgrounds only */
   --green-light: #a9c2ae; /* accent on graphite backgrounds only */
   --muted: #3a413c;       /* secondary text on sage */
-  --border: #afb8ab;      /* input borders */
+  --border: #afb8ab;      /* decorative lines (1.9:1, too light for inputs) */
+  --input-border: #7a8477; /* form inputs: 3.61:1 on sage-light (WCAG 1.4.11) */
 
   /* Type */
   --font-serif: 'Newsreader Variable', Georgia, 'Times New Roman', serif;

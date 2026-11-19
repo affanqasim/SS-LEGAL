@@ -131,3 +131,16 @@ svg {
     scroll-behavior: auto !important;
   }
 }
+
+/* Motion start states. Only applied when motion is allowed (html.motion is
+   set before first paint by BaseLayout). The hero title moves but never
+   fades, so it paints straight away for Largest Contentful Paint. */
+html.motion [data-reveal-hero]:not([data-hero-title]),
+html.motion [data-reveal],
+html.motion [data-reveal-card] {
+  opacity: 0;
+  transform: translateY(24px);
+}
+html.motion [data-hero-title] {
+  transform: translateY(24px);
+}

@@ -1,0 +1,50 @@
+---
+import PhoneLink from '../PhoneLink.astro';
+import EnquiryForm from './EnquiryForm.astro';
+---
+<section class="hero">
+  <div class="container grid">
+    <div class="text">
+      <p class="eyebrow" data-reveal-hero>Commercial disputes</p>
+      <h1 data-reveal-hero data-hero-title>When a business dispute lands on your desk, talk it through with a solicitor.</h1>
+      <p class="lede" data-reveal-hero>
+        Tell us what has happened and choose a time. A solicitor will call you,
+        go through the detail and explain the options open to you.
+      </p>
+      <p class="call" data-reveal-hero>Prefer to talk now? <PhoneLink /></p>
+    </div>
+    <EnquiryForm />
+  </div>
+</section>
+
+<style>
+  .hero { padding-block: clamp(2.5rem, 1.5rem + 4vw, 5rem); }
+
+  .grid { display: grid; gap: 2.5rem; align-items: start; }
+
+  h1 { max-width: 15ch; margin-top: 0.75rem; }
+
+  .lede {
+    max-width: 42ch;
+    font-size: var(--text-lg);
+    color: var(--muted);
+  }
+
+  .call {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem 0.75rem;
+    margin-top: 1.5rem;
+    padding-top: 1.25rem;
+    border-top: var(--rule);
+    color: var(--muted);
+    font-size: var(--text-sm);
+  }
+  .call :global(.phone) { color: var(--graphite); font-size: var(--text-base); }
+
+  @media (min-width: 1000px) {
+    .grid { grid-template-columns: 1fr minmax(420px, 480px); gap: 4rem; }
+    .text { position: sticky; top: 2rem; padding-top: 1rem; }
+  }
+</style>

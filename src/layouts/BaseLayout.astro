@@ -21,7 +21,18 @@ const fullTitle = title ? `${title} | ${site.name}` : site.name;
     <meta name="description" content={description} />
     <meta name="theme-color" content="#DCE3D8" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-    <script is:inline>document.documentElement.classList.add('js');</script>
+    <script is:inline>
+      (function () {
+        var root = document.documentElement;
+        root.classList.add('js');
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+        root.classList.add('motion');
+        // Safety net: if the motion script fails, show everything.
+        setTimeout(function () {
+          if (!root.classList.contains('motion-ready')) root.classList.remove('motion');
+        }, 3000);
+      })();
+    </script>
   </head>
   <body>
     <a class="skip-link" href="#main">Skip to content</a>
@@ -30,5 +41,8 @@ const fullTitle = title ? `${title} | ${site.name}` : site.name;
       <slot />
     </main>
     <Footer />
+    <script>
+      import '../scripts/motion.ts';
+    </script>
   </body>
 </html>

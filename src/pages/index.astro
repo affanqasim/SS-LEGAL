@@ -1,35 +1,13 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import Hero from '../components/home/Hero.astro';
+import TrustStrip from '../components/home/TrustStrip.astro';
+import PracticeGrid from '../components/home/PracticeGrid.astro';
+import HowItWorks from '../components/home/HowItWorks.astro';
 ---
-<BaseLayout>
-  <section class="container placeholder">
-    <p class="eyebrow">Placeholder</p>
-    <h1>Homepage coming next</h1>
-    <p>
-      The hero, enquiry form, trust strip, practice areas grid and how it works
-      sections will go here once the homepage design is approved.
-    </p>
-    <div id="enquiry" class="slot">[Enquiry form]</div>
-  </section>
+<BaseLayout description="Commercial disputes solicitors. Tell us what has happened and book a call with a solicitor.">
+  <Hero />
+  <TrustStrip />
+  <PracticeGrid />
+  <HowItWorks />
 </BaseLayout>
-
-<style>
-  .placeholder {
-    padding-block: clamp(3rem, 2rem + 5vw, 6rem);
-  }
-  .placeholder p:not(.eyebrow) {
-    max-width: 60ch;
-    color: var(--muted);
-  }
-  .slot {
-    scroll-margin-top: 140px; /* clear of the header if it is showing */
-    display: grid;
-    place-items: center;
-    min-height: 200px;
-    margin-top: 2rem;
-    border: 1px dashed var(--green);
-    border-radius: var(--radius-card-lg);
-    background: var(--sage-light);
-    color: var(--green);
-  }
-</style>
