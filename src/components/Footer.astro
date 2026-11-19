@@ -1,0 +1,99 @@
+---
+import { site, mainNav, legalNav } from '../data/site';
+import PhoneLink from './PhoneLink.astro';
+
+const year = new Date().getFullYear();
+---
+<footer class="site-footer">
+  <div class="container">
+    <div class="row main">
+      <a class="logo" href="/">{site.name}</a>
+      <div class="contact">
+        <PhoneLink />
+        <a href={`mailto:${site.email}`}>{site.email}</a>
+      </div>
+      <nav aria-label="Footer">
+        <ul>
+          {mainNav.map((n) => <li><a href={n.href}>{n.label}</a></li>)}
+        </ul>
+      </nav>
+    </div>
+
+    <div class="row regulatory">
+      <!-- SRA digital badge goes here once the firm is authorised -->
+      <div class="badge-slot" aria-hidden="true">[SRA badge]</div>
+      <p>
+        [Regulatory statement: wording supplied by the firm]. SRA number: {site.sraNumber}.
+        [Registered company details, if a company].
+      </p>
+    </div>
+
+    <div class="row bottom">
+      <p>&copy; {year} {site.name}</p>
+      <ul>
+        {legalNav.map((n) => <li><a href={n.href}>{n.label}</a></li>)}
+      </ul>
+    </div>
+  </div>
+</footer>
+
+<style>
+  /* Graphite section: light text, green-light accents. Never green text here. */
+  .site-footer {
+    background: var(--graphite);
+    color: var(--sage);
+    font-size: var(--text-sm);
+    line-height: 1.5;
+  }
+
+  a { color: var(--sage-light); text-decoration: none; }
+  a:hover { color: var(--green-light); text-decoration: underline; text-underline-offset: 3px; }
+
+  ul { margin: 0; padding: 0; list-style: none; display: flex; flex-wrap: wrap; gap: 0.25rem 1.25rem; }
+  p { margin: 0; }
+
+  .row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem 1.5rem;
+    padding-block: 1rem;
+  }
+  .row + .row { border-top: 1px solid color-mix(in srgb, var(--sage) 22%, transparent); }
+
+  .main { padding-top: 1.5rem; }
+  .bottom { padding-bottom: 1.5rem; justify-content: space-between; }
+
+  .logo {
+    font-family: var(--font-serif);
+    font-size: 1.375rem;
+    line-height: 1;
+  }
+
+  .contact {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.25rem 1.25rem;
+  }
+
+  .main nav { margin-left: auto; }
+
+  .regulatory { flex-wrap: nowrap; gap: 1rem; }
+  .badge-slot {
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 80px;
+    height: 40px;
+    border: 1px dashed var(--green-light);
+    border-radius: 6px;
+    color: var(--green-light);
+    font-size: 0.6875rem;
+  }
+
+  @media (max-width: 767.98px) {
+    .main nav { margin-left: 0; width: 100%; }
+    .logo { width: 100%; }
+  }
+</style>

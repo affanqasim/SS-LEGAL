@@ -1,0 +1,31 @@
+---
+import { site } from '../data/site';
+import PhoneIcon from './PhoneIcon.astro';
+
+interface Props { class?: string }
+const { class: className } = Astro.props;
+const { display, href } = site.phone;
+---
+{href ? (
+  <a class:list={['phone', className]} href={`tel:${href}`}>
+    <PhoneIcon /><span>{display}</span>
+  </a>
+) : (
+  <span class:list={['phone', className]}>
+    <PhoneIcon /><span>{display}</span>
+  </span>
+)}
+
+<style>
+  .phone {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    color: inherit;
+    font-weight: 500;
+    font-size: var(--text-sm);
+    text-decoration: none;
+    white-space: nowrap;
+  }
+  a.phone:hover { text-decoration: underline; text-underline-offset: 3px; }
+</style>

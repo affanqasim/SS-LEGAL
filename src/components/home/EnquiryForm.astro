@@ -1,0 +1,201 @@
+---
+import { practiceAreas } from '../../data/practiceAreas';
+
+const caseValues = ['Under £50,000', '£50,000 to £200,000', 'Over £200,000'];
+const MAX_MB = 10;
+---
+<div class="form-card" id="enquiry" data-reveal-hero>
+  <ol class="steps" aria-label="Enquiry steps">
+    <li class="current" aria-current="step"><span>1</span> Your details</li>
+    <li><span>2</span> Choose a time</li>
+  </ol>
+
+  <form class="enquiry" data-max-mb={MAX_MB}>
+    <div class="field">
+      <label for="f-name">Full name</label>
+      <input id="f-name" name="name" type="text" autocomplete="name" required />
+    </div>
+
+    <div class="row-2">
+      <div class="field">
+        <label for="f-email">Email</label>
+        <input id="f-email" name="email" type="email" autocomplete="email" required />
+      </div>
+      <div class="field">
+        <label for="f-phone">Phone</label>
+        <input id="f-phone" name="phone" type="tel" autocomplete="tel" required />
+      </div>
+    </div>
+
+    <div class="field">
+      <label for="f-area">Practice area</label>
+      <select id="f-area" name="practiceArea" required>
+        <option value="" disabled selected>Select an area</option>
+        {practiceAreas.map((a) => <option value={a.name}>{a.name}</option>)}
+        <option value="Other">Other</option>
+      </select>
+    </div>
+
+    <fieldset class="field">
+      <legend>Value of your case</legend>
+      <div class="choices">
+        {caseValues.map((v, i) => (
+          <label class="choice">
+            <input type="radio" name="caseValue" value={v} required={i === 0} />
+            <span>{v}</span>
+          </label>
+        ))}
+      </div>
+    </fieldset>
+
+    <div class="field">
+      <label for="f-what">What has happened?</label>
+      <textarea id="f-what" name="details" rows="4" required></textarea>
+    </div>
+
+    <div class="field">
+      <label for="f-docs">Documents <span class="optional">(optional, up to {MAX_MB} MB in total)</span></label>
+      <input id="f-docs" name="documents" type="file" multiple
+        accept=".pdf,.doc,.docx,.xls,.xlsx,.jpg,.jpeg,.png" />
+    </div>
+
+    <div class="submit-row">
+      <button class="btn btn-primary" type="submit">Continue to choose a time</button>
+      <p class="privacy">
+        We use your details to respond to your enquiry. See our <a href="/privacy">privacy notice</a>.
+      </p>
+    </div>
+
+    <p class="status" role="status" aria-live="polite"></p>
+  </form>
+</div>
+
+<script>
+  const form = document.querySelector<HTMLFormElement>('form.enquiry');
+  if (form) {
+    const maxBytes = Number(form.dataset.maxMb) * 1024 * 1024;
+    const files = form.querySelector<HTMLInputElement>('input[type="file"]');
+    const status = form.querySelector<HTMLElement>('.status');
+
+    files?.addEventListener('change', () => {
+      const total = Array.from(files.files ?? []).reduce((sum, f) => sum + f.size, 0);
+      files.setCustomValidity(
+        total > maxBytes ? `Your files add up to more than ${form.dataset.maxMb} MB. Please remove some.` : '',
+      );
+      files.reportValidity();
+    });
+
+    // Sending is not built yet (design stage). The browser has already
+    // checked the required fields before this runs.
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      if (status) status.textContent = 'Preview only: sending is not connected yet.';
+    });
+  }
+</script>
+
+<style>
+  .form-card {
+    background: var(--sage-light);
+    border-radius: var(--radius-card-lg);
+    padding: clamp(1.25rem, 1rem + 1.5vw, 2rem);
+    /* Room for the header (119px on phones) when jumped to without Lenis. */
+    scroll-margin-top: 8.5rem;
+  }
+  .form-card:focus { outline: none; }
+
+  .steps {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1.25rem;
+    margin: 0 0 1.25rem;
+    padding: 0 0 1rem;
+    list-style: none;
+    border-bottom: var(--rule);
+    font-size: var(--text-sm);
+    color: var(--muted);
+  }
+  .steps li { display: inline-flex; align-items: center; gap: 0.5rem; }
+  .steps span {
+    display: inline-grid;
+    place-items: center;
+    width: 1.5rem;
+    height: 1.5rem;
+    border: 1px solid var(--input-border);
+    border-radius: 50%;
+    font-size: 0.75rem;
+  }
+  .steps .current { color: var(--graphite); font-weight: 600; }
+  .steps .current span { background: var(--graphite); border-color: var(--graphite); color: var(--sage-light); }
+
+  .enquiry { display: grid; gap: 1rem; }
+
+  .field { display: grid; gap: 0.35rem; margin: 0; padding: 0; border: 0; min-width: 0; }
+  .row-2 { display: grid; gap: 1rem; }
+
+  label,
+  legend {
+    padding: 0;
+    font-size: var(--text-sm);
+    font-weight: 600;
+  }
+  legend { margin-bottom: 0.35rem; }
+  .optional { font-weight: 400; color: var(--muted); }
+
+  input[type='text'],
+  input[type='email'],
+  input[type='tel'],
+  select,
+  textarea {
+    width: 100%;
+    min-height: 44px;
+    padding: 0.6rem 0.8rem;
+    border: 1px solid var(--input-border);
+    border-radius: 10px;
+    background: var(--sage-light);
+    color: var(--graphite);
+    font: inherit;
+    font-size: 1rem; /* 16px stops iOS zooming into fields */
+  }
+  textarea { resize: vertical; min-height: 6.5rem; }
+  input:focus-visible,
+  select:focus-visible,
+  textarea:focus-visible { outline: 2px solid var(--graphite); outline-offset: 1px; }
+
+  input[type='file'] { font: inherit; font-size: var(--text-sm); color: var(--muted); max-width: 100%; }
+  input[type='file']::file-selector-button {
+    margin-right: 0.75rem;
+    padding: 0.5rem 1rem;
+    border: 1px solid var(--green);
+    border-radius: var(--radius-pill);
+    background: transparent;
+    color: var(--green);
+    font: 500 var(--text-sm) / 1.2 var(--font-sans);
+    cursor: pointer;
+  }
+
+  .choices { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+  .choice { position: relative; font-weight: 400; }
+  .choice input { position: absolute; opacity: 0; inset: 0; margin: 0; cursor: pointer; }
+  .choice span {
+    display: inline-flex;
+    align-items: center;
+    min-height: 40px;
+    padding: 0.45rem 0.95rem;
+    border: 1px solid var(--input-border);
+    border-radius: var(--radius-pill);
+    font-size: var(--text-sm);
+  }
+  .choice input:checked + span { background: var(--graphite); border-color: var(--graphite); color: var(--sage-light); }
+  .choice input:focus-visible + span { outline: 2px solid var(--graphite); outline-offset: 2px; }
+
+  .submit-row { display: grid; gap: 0.75rem; margin-top: 0.25rem; }
+  .submit-row .btn { width: 100%; font-size: var(--text-base); min-height: 48px; }
+  .privacy { margin: 0; font-size: var(--text-sm); color: var(--muted); }
+  .status { margin: 0; font-size: var(--text-sm); color: var(--green); font-weight: 600; }
+  .status:empty { display: none; }
+
+  @media (min-width: 560px) {
+    .row-2 { grid-template-columns: 1fr 1fr; }
+  }
+</style>

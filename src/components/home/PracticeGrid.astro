@@ -1,0 +1,66 @@
+---
+import { practiceAreas } from '../../data/practiceAreas';
+---
+<section class="areas" aria-labelledby="areas-title">
+  <div class="container">
+    <div class="head" data-reveal>
+      <p class="eyebrow">Practice areas</p>
+      <h2 id="areas-title">The disputes we handle</h2>
+    </div>
+    <ul class="grid">
+      {practiceAreas.map((a) => (
+        <li data-reveal-card>
+          <a class="card" href={`/practice-areas/${a.slug}`}>
+            <h3>{a.name}</h3>
+            <p>{a.summary}</p>
+            <svg class="arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+              <path d="M5 12h14M13 6l6 6-6 6" />
+            </svg>
+          </a>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>
+
+<style>
+  .areas { padding-block: clamp(3.5rem, 2.5rem + 4vw, 6rem); }
+  .head { margin-bottom: 2rem; }
+  h2 { margin-top: 0.5rem; }
+
+  .grid {
+    display: grid;
+    gap: 1rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    padding: 1.5rem 1.5rem 3.5rem;
+    border-radius: var(--radius-card);
+    background: var(--sage-light);
+    color: var(--graphite);
+    text-decoration: none;
+    transition: transform 0.25s ease;
+  }
+  .card:hover { transform: translateY(-3px); }
+  .card h3 { font-size: 1.375rem; margin-bottom: 0.5rem; }
+  .card p { margin: 0; font-size: var(--text-sm); color: var(--muted); }
+  .arrow {
+    position: absolute;
+    left: 1.5rem;
+    bottom: 1.25rem;
+    color: var(--green);
+    transition: transform 0.25s ease;
+  }
+  .card:hover .arrow { transform: translateX(4px); }
+
+  @media (min-width: 640px) { .grid { grid-template-columns: 1fr 1fr; } }
+  @media (min-width: 1000px) { .grid { grid-template-columns: repeat(3, 1fr); } }
+</style>
